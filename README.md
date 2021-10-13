@@ -48,12 +48,18 @@ For development, you will only need Node.js and a node global package, npm , ins
 
 
 ## building docker image
+
 - ### docker image of api gateway
+
+  create docker image and run
+
     $ docker build -t gateway .
     $ docker run -d  -p 6004:6004 gateway
-    $ cd..
 
 - ### docker image of services
+
+  create docker images of service and run
+
     $ cd services/service_product
     $ docker build -t service_product .
     $ docker run -d  -p 6004:6004 service_product
