@@ -54,7 +54,7 @@ For development, you will only need Node.js and a node global package, npm , ins
   create docker image and run
 
       $ docker build -t gateway .
-      $ docker run -d  -p 6004:6004 gateway
+      $ docker run -d  -p 6001:6001 gateway
 
 - ### docker image of services
 
