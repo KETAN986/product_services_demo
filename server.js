@@ -8,10 +8,8 @@ app.listen(process.env.PORT || 6001)
 app.use(require('cors')())
 app.use(express.static('htmls'))
 
-const {swaggerDoc,logger} = require("./load.js");
+const {logger} = require("./load.js");
 const jwt = require('jsonwebtoken')
-
-swaggerDoc(app);
 
 app.use((req,_,next)=>{
 	logger.log({level: 'info',api:req.originalUrl,ip:req.ip});

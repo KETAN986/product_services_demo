@@ -39,10 +39,13 @@ api.get('/',async (req,res,next)=>{try{
 
 api.get('/fetch_product',async (req,res,next)=>{try{
     console.log('api hit')
-    
-    let stock = axios.get('http://localhost:6002/')
-    let price = axios.get('http://localhost:6003/')
-    let products = axios.get('http://localhost:6004/')
+
+    let options = {
+        headers: {authorization:req.headers.authorization}
+    }
+    let stock = axios.get('http://localhost:6002/',options)
+    let price = axios.get('http://localhost:6003/',options)
+    let products = axios.get('http://localhost:6004/',options)
 
     Promise.all([stock,price,products]).then((data)=>{
         let stock = data[0].data.data
@@ -80,12 +83,13 @@ api.get('/fetch_product',async (req,res,next)=>{try{
 
 
 api.post('/buy',async (req,res,next)=>{try{
+   
     console.log(req.body)
     let config = {
         method:'POST',
         url:'http://localhost:6002/buy',
         data:req.body,
-        // headers: headers
+        headers: {authorization:req.headers.authorization}
     }
     let resp = await axios(config)
 

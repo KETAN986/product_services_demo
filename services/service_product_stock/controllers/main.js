@@ -10,13 +10,13 @@ const jwt = require('jsonwebtoken')
 async function verify_req(req,res,next){
 
     let token = req.headers.authorization 
-    // try{
-    //     var decoded = jwt.verify(token,'test')
-    //     req.header_data = decoded
-    // }
-    // catch(e){
-    //     return res.status(401).send('Unauthorized access')
-    // }
+    try{
+        var decoded = jwt.verify(token,'test_demo')
+        req.header_data = decoded
+    }
+    catch(e){
+        return res.status(401).send('Unauthorized access')
+    }
     
     next()
 }
