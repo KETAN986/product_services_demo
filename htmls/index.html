@@ -15,6 +15,13 @@
         <div style="margin-top:50px;display: flex;justify-content: center;">
             <h1>Buy Products</h1>
         </div>
+        <div class="container" style="margin-top:50px;display: flex;justify-content: space-evenly;">
+            <div>Enter passkey:</div>
+            <input type="text" id="key">
+            <button onClick="auth()" class="btn">Authenticate</button><br><br><br><br>
+        </div>
+        
+
         <div style="border: 1px solid black;padding: 10px;">
             <table id="table" >
                 <thead style="background-color: bisque;">
@@ -37,15 +44,49 @@
 
 </body>
 <script>
+    var token =''
     let table = document.getElementById('table_data')
-    let options = {method:'POST',headers:{'Content-Type':"application/json"},body:null}
+    get_key()
     fetch_products()
+
+    function auth(){
+        console.log('here')
+        let key = document.getElementById('key').value
+
+        let options = {
+            method : 'POST',
+            body : JSON.stringify({passkey:key}),
+            headers : {'Content-Type':"application/json"}
+        }
+        fetch('/authenticate',options).then(resp=>resp.json()).then(resp=>{
+            if(resp.status==0){
+                sessionStorage.setItem('token',resp.token)
+                sessionStorage.setItem('key',key)
+                window.location.reload()
+            }
+            else{
+                M.toast({html: 'Wrong passkey'})
+            }
+        })
+
+        get_key()
+    }
+
+    function get_key(){
+        let key = sessionStorage.getItem('key')
+        token = sessionStorage.getItem('token')
+        document.getElementById('key').setAttribute('value',key ??'')
+    }
 
     function buy(product_sku,country){
         
         let json = {product_sku,country}
         
-        options.body = JSON.stringify(json)
+        let options = {
+            method : 'POST',
+            body : JSON.stringify(json),
+            headers : {Authorization:token,'Content-Type':"application/json"}
+        }
 
         fetch('/buy',options).then(resp=>resp.json()).then(resp=> {
             let msg = resp.msg
@@ -58,7 +99,12 @@
     }
 
     function fetch_products(){
-        fetch('/fetch_product').then(resp=>resp.json()).then(resp=> {
+        let options = {
+            method : 'GET',
+            headers : {Authorization:token}
+        }
+
+        fetch('/fetch_product',options).then(resp=>resp.json()).then(resp=> {
             if(resp.status==0){
                 set_table(resp.data)
             }

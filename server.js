@@ -9,6 +9,7 @@ app.use(require('cors')())
 app.use(express.static('htmls'))
 
 const {swaggerDoc,logger} = require("./load.js");
+const jwt = require('jsonwebtoken')
 
 swaggerDoc(app);
 
@@ -18,13 +19,20 @@ app.use((req,_,next)=>{
 })
 
 
-app.get('/test',async (req,res)=>{ 
-    res.send('ok')
-})
-app.post('/',(req,res)=>{
-    res.send('okk')
-})
 
+app.post('/authenticate',async (req,res,next)=>{try{
+	console.log('aya')
+    let key = 'aweoriqpuoweiurqpowieituqoiwrets'
+    let passkey = req.body.passkey
+	console.log(req.body)
+    if(key==passkey){
+		console.log('here')
+        let token = jwt.sign({data:'test'},'test_demo')
+        return res.send({status:0,msg:'Success',token:token})
+    }
+    return res.send({status:1,msg:'Wrong Passkey'})
+    }catch(err){res.status(500);next(err)}
+})
 
 app.use('/',require('./controllers/main.js'))
 

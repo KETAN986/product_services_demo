@@ -47,19 +47,24 @@ api.post('/buy',async (req,res,next)=>{try{
     let set = {}
 
 
-    if(row.india_available==0 || row.usa_available==0){
-        return res.send({
-            status:1,
-            msg:'Out of Stock',
-        })
+    let error = {
+        status:1,
+        msg:'Out of Stock',
     }
     
+    
     if(country=='india'){
+        if(row.india_available==0){
+            return res.send(error)
+        }
         
         set['india_purchased'] = row.india_purchased +1
         set['india_available'] = row.india_available -1
     }
     else{
+        if(row.usa_available==0){
+            return res.send(error)
+        }
         set['usa_purchased'] = row.usa_purchased +1
         set['usa_available'] = row.usa_available -1
     }
