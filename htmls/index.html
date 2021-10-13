@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container" >
+        <div style="margin-top:50px;display: flex;justify-content: center;">
+            <h1>Buy Products</h1>
+        </div>
+        <div style="border: 1px solid black;padding: 10px;">
+            <table id="table" >
+                <thead style="background-color: bisque;">
+                    <tr>
+                        <th>Sno</th>
+                        <th>Product id</th>
+                        <th>Name</th>
+                        <th>Sku</th>
+                        <th>Stock India</th>
+                        <th>Stock usa</th>
+                        <th>Price India</th>
+                        <th>Price usa</th>
+                        <th>Buy</th>
+                    </tr>
+                </thead>
+                <tbody id="table_data"></tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+<script>
+    let table = document.getElementById('table_data')
+    let options = {method:'POST',headers:{'Content-Type':"application/json"},body:null}
+    fetch_products()
+
+    function buy(product_sku,country){
+
+        json = {product_sku,country}
+        
+        options.body = JSON.stringify(json)
+
+        fetch('/buy',options).then(data=>{
+            // M.toast({html: 'Product Bought'})
+            window.location.reload()
+        })
+
+    }
+
+    function fetch_products(){
+        fetch('/fetch_product').then(resp=>resp.json()).then(resp=> {
+            if(resp.status==0){
+                set_table(resp.data)
+            }
+        })
+    }
+
+    function set_table(data){
+        console.log(data)
+        data.forEach((element,i) => {
+            let child = document.createElement('tr')
+            let html = `<td>${i+1}</td>`
+            html += `<td>${element.product_id}</td>`
+            html += `<td>${element.product_name}</td>`
+            html += `<td>${element.product_sku}</td>`
+            html += `<td>${element.india_available}</td>`
+            html += `<td>${element.usa_available}</td>`
+            html += `<td>${element.price_inr}</td>`
+            html += `<td>${element.price_usd}</td>`
+
+            let buttons = `
+                <button class="btn" onClick="buy('${element.product_sku}','india')" >Purchase from India</button>
+                <button class="btn" onClick="buy('${element.product_sku}','usa')" >Purchase from Usa</button>
+            `
+
+            html += `<td>${buttons}</td>`
+
+
+            child.innerHTML = html
+            table.appendChild(child)
+        });
+    }
+</script>
+</html>
+
+
