@@ -42,14 +42,17 @@
     fetch_products()
 
     function buy(product_sku,country){
-
-        json = {product_sku,country}
+        
+        let json = {product_sku,country}
         
         options.body = JSON.stringify(json)
 
-        fetch('/buy',options).then(data=>{
-            // M.toast({html: 'Product Bought'})
-            window.location.reload()
+        fetch('/buy',options).then(resp=>resp.json()).then(resp=> {
+            let msg = resp.msg
+            M.toast({html: msg})
+            if(resp.status==0){
+                window.location.reload()
+            }
         })
 
     }

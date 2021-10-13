@@ -76,7 +76,7 @@ api.get('/fetch_product',async (req,res,next)=>{try{
 
 
 api.post('/buy',async (req,res,next)=>{try{
-    
+    console.log(req.body)
     let config = {
         method:'POST',
         url:'http://localhost:6002/buy',
@@ -84,9 +84,7 @@ api.post('/buy',async (req,res,next)=>{try{
         // headers: headers
     }
     let resp = await axios(config)
-    resp.data
 
-
-    return res.send('ok')
+    return res.send(resp.data)
     }catch(err){res.status(500);next(err)}
 })

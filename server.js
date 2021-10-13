@@ -31,8 +31,7 @@ app.use('/',require('./controllers/main.js'))
      
 app.use(async (data,req,res,next)=>{
 	if(res.statusCode==500){
-		logger.log('error',err.message ?? err.msg)
-
+		logger.log('error',data)
 		return res.send(data.message ?? data.msg)
 	}
 	else{

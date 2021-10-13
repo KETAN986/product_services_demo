@@ -43,13 +43,19 @@ api.get('/',async (req,res,next)=>{try{
 api.post('/buy',async (req,res,next)=>{try{
     const {product_sku,country} = req.body
 
-    console.log(product_sku)
     let row = await fetch_row('*','product_stock',{product_sku})
     let set = {}
 
 
+    if(row.india_available==0 || row.usa_available==0){
+        return res.send({
+            status:1,
+            msg:'Out of Stock',
+        })
+    }
     
     if(country=='india'){
+        
         set['india_purchased'] = row.india_purchased +1
         set['india_available'] = row.india_available -1
     }
