@@ -53,24 +53,24 @@ For development, you will only need Node.js and a node global package, npm , ins
 
   create docker image and run
 
-    $ docker build -t gateway .
-    $ docker run -d  -p 6004:6004 gateway
+      $ docker build -t gateway .
+      $ docker run -d  -p 6004:6004 gateway
 
 - ### docker image of services
 
   create docker images of service and run
 
-    $ cd services/service_product
-    $ docker build -t service_product .
-    $ docker run -d  -p 6004:6004 service_product
-    $ cd..
+      $ cd services/service_product
+      $ docker build -t service_product .
+      $ docker run -d  -p 6004:6004 service_product
+      $ cd..
 
-    $ cd service_product_price
-    $ docker build -t service_product_price .
-    $ docker run -d  -p 6003:6003 service_product_price
-    $ cd..
+      $ cd service_product_price
+      $ docker build -t service_product_price .
+      $ docker run -d  -p 6003:6003 service_product_price
+      $ cd..
 
-    $ cd service_product_stocks
-    $ docker build -t service_product_stocks .
-    $ docker run -d  -p 6002:6002 service_product_stocks
-    $ cd..
+      $ cd service_product_stocks
+      $ docker build -t service_product_stocks .
+      $ docker run -d  -p 6002:6002 service_product_stocks
+      $ cd..
